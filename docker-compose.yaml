@@ -1,0 +1,32 @@
+version: '2'
+services:
+    web:
+        container_name: odoo_web
+        build:
+            context: .
+            dockerfile: Dockerfile-odoo
+        depends_on:
+            - db
+        volumes:
+            - odoo-web-data:/var/lib/odoo
+    db:
+        container_name: odoo_db
+        image: postgres:9.4
+        environment:
+            - POSTGRES_PASSWORD=odoo
+            - POSTGRES_USER=odoo
+            - PGDATA=/var/lib/postgresql/data/pgdata
+        volumes:
+            - odoo-db-data:/var/lib/postgresql/data/pgdata
+    proxy:
+        depends_on:
+            - web
+        container_name: odoo_proxy
+        build:
+            context: .
+            dockerfile: Dockerfile-nginx
+        ports:
+            - "8069:8069"
+volumes:
+    odoo-web-data:
+    odoo-db-data:

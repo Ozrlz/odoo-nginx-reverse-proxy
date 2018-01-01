@@ -1,0 +1,12 @@
+FROM odoo:10.0
+MAINTAINER Ozrlz
+
+USER root
+
+# Copy the key content, such as the config file and the enterprise addons
+COPY ./odoo.conf /etc/odoo/odoo.conf
+RUN chown odoo:odoo -R /etc/odoo/
+
+USER odoo
+
+EXPOSE 8072
