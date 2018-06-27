@@ -5,10 +5,13 @@ services:
         build:
             context: .
             dockerfile: Dockerfile-odoo
+        image: odoo-nginx:1.0
         depends_on:
             - db
         volumes:
             - odoo-web-data:/var/lib/odoo
+        ports:
+            - "8069:8069"
     db:
         container_name: odoo_db
         image: postgres:9.4
@@ -25,8 +28,10 @@ services:
         build:
             context: .
             dockerfile: Dockerfile-nginx
+        image: proxy-nginx:1.0
         ports:
-            - "8069:8069"
+            - "80:80"
+            - "443:443"
 volumes:
     odoo-web-data:
     odoo-db-data:
